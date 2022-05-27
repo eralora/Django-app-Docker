@@ -1,0 +1,12 @@
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=django
+Group=www-data
+WorkingDirectory=/var/www/devopslab
+ExecStart=/var/www/devopslab/devopslabenv/bin/gunicorn --access-logfile - --workers 3 --bind unix:/tmp/labapp.sock labapp.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
