@@ -12,7 +12,6 @@ RUN pip install --upgrade pip
 COPY ./requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt
 
-COPY . . 
 
 
 FROM python:3.8.16-alpine3.16
