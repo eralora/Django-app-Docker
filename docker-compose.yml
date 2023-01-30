@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: gunicorn labapp.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - ./:/app/
+    expose:
+      - 8000
+    env_file:
+      - ./.env.dev
+    depends_on:
+      - db
+  db:
+    image: postgres:13.0-alpine
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=labapp
+      - POSTGRES_PASSWORD=P@ssword
+      - POSTGRES_DB=lab_db
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./ssl:/etc/nginx/ssl:ro    
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
